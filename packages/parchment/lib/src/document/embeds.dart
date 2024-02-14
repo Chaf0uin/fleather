@@ -53,9 +53,7 @@ class EmbeddableObject {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! EmbeddableObject) return false;
-    return other.type == type &&
-        other.inline == inline &&
-        _dataEquality.equals(other._data, _data);
+    return other.type == type && other.inline == inline && _dataEquality.equals(other._data, _data);
   }
 
   @override
@@ -69,10 +67,18 @@ class EmbeddableObject {
   }
 
   Map<String, dynamic> toJson() {
-    final json = Map<String, dynamic>.from(_data);
-    json[kTypeKey] = type;
-    json[kInlineKey] = inline;
-    return json;
+    if (type == 'mention') {
+      Map<String, dynamic> json = {
+        'mention': data,
+      };
+
+      return json;
+    } else {
+      final json = Map<String, dynamic>.from(_data);
+      json[kTypeKey] = type;
+      json[kInlineKey] = inline;
+      return json;
+    }
   }
 }
 
@@ -100,8 +106,8 @@ class BlockEmbed extends EmbeddableObject {
   }) : super(inline: false);
 
   static final BlockEmbed horizontalRule = BlockEmbed('hr');
-  static BlockEmbed image(String source) =>
-      BlockEmbed('image', data: {'source': source});
-  static BlockEmbed mention(String id, String value) =>
-      BlockEmbed('mention', data: {'id': id, 'value': value});
+
+  static BlockEmbed image(String source) => BlockEmbed('image', data: {'source': source});
+
+  static BlockEmbed mention(String id, String value) => BlockEmbed('mention', data: {'id': id, 'value': value});
 }
