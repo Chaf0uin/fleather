@@ -49,6 +49,7 @@ const _indentWidthInPx = 32;
 /// ## Embed mapping
 /// - [BlockEmbed.image] -> `<img src="...">`
 /// - [BlockEmbed.horizontalRule] -> `<hr>`
+/// - [BlockEmbed.mention] -> `<span class="mention">`
 ///
 /// *NB: `<br>` are not recognized as new lines and will be ignored*
 /// <br>
@@ -492,6 +493,11 @@ class _ParchmentHtmlEncoder extends Converter<ParchmentDocument, String> {
               '<img src="${embeddable.data['source']}" style="max-width: 100%; object-fit: contain;">');
           return;
         }
+        if (embeddable.type == 'mention') {
+          buffer.write(''
+              '<span class="mention" data-denotation-char="@" data-id="${embeddable.data['id']}" data-value="${embeddable.data['value']}"><span contenteditable="false"><span contenteditable="inherit"><span class="ql-mention-denotation-char">@</span>${embeddable.data['value']}<span style="display: inline-block; height: 1px; width: 1px; overflow: hidden; ">&nbsp;</span></span></span></span>');
+          return;
+        }
       }
     }
   }
@@ -893,6 +899,12 @@ class _ParchmentHtmlDecoder extends Converter<String, ParchmentDocument> {
       if (node.localName == 'img') {
         final src = node.attributes['src'] ?? '';
         delta.insert(BlockEmbed.image(src).toJson());
+        return delta;
+      }
+      if (node.localName == 'span' && node.classes.contains('mention')) {
+        final id = node.attributes['data-id'] ?? '';
+        final value = node.attributes['data-value'] ?? '';
+        delta.insert(BlockEmbed.mention(id, value).toJson());
         return delta;
       }
       inlineStyle = _updateInlineStyle(node, inlineStyle);
