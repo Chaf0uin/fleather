@@ -71,8 +71,8 @@ class EmbeddableObject {
       Map<String, dynamic> json = {
         'mention': data,
       };
-      json[kTypeKey] = type;
-      json[kInlineKey] = inline;
+      // json[kTypeKey] = type;
+      // json[kInlineKey] = inline;
 
       return json;
     } else {
