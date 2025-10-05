@@ -67,10 +67,18 @@ class EmbeddableObject {
   }
 
   Map<String, dynamic> toJson() {
-    final json = Map<String, dynamic>.from(_data);
-    json[kTypeKey] = type;
-    json[kInlineKey] = inline;
-    return json;
+    if (type == 'mention') {
+      Map<String, dynamic> json = {
+        'mention': data,
+      };
+
+      return json;
+    } else {
+      final json = Map<String, dynamic>.from(_data);
+      json[kTypeKey] = type;
+      json[kInlineKey] = inline;
+      return json;
+    }
   }
 }
 
