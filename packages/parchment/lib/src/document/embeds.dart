@@ -16,13 +16,13 @@ class EmbeddableObject {
   static const kInlineKey = '_inline';
 
   EmbeddableObject(
-    this.type, {
-    required this.inline,
-    Map<String, dynamic> data = const {},
-  })  : assert(!data.containsKey(kTypeKey),
-            'The "$kTypeKey" key is reserved in $EmbeddableObject data and cannot be used.'),
+      this.type, {
+        required this.inline,
+        Map<String, dynamic> data = const {},
+      })  : assert(!data.containsKey(kTypeKey),
+  'The "$kTypeKey" key is reserved in $EmbeddableObject data and cannot be used.'),
         assert(!data.containsKey(kInlineKey),
-            'The "$kInlineKey" key is reserved in $EmbeddableObject data and cannot be used.'),
+        'The "$kInlineKey" key is reserved in $EmbeddableObject data and cannot be used.'),
         _data = Map.from(data);
 
   /// The type of this object.
@@ -62,7 +62,7 @@ class EmbeddableObject {
     if (_data.isEmpty) return Object.hash(type, inline);
 
     final dataHash =
-        Object.hashAll(_data.entries.map((e) => Object.hash(e.key, e.value)));
+    Object.hashAll(_data.entries.map((e) => Object.hash(e.key, e.value)));
     return Object.hash(type, inline, dataHash);
   }
 
@@ -87,9 +87,9 @@ class EmbeddableObject {
 /// An object which can be embedded on the same line (inline) with regular text.
 class SpanEmbed extends EmbeddableObject {
   SpanEmbed(
-    super.type, {
-    super.data,
-  }) : super(inline: true);
+      super.type, {
+        super.data,
+      }) : super(inline: true);
 
   static SpanEmbed mention(String id, String value) => SpanEmbed('mention', data: {'id': id, 'value': value});
 }
@@ -104,8 +104,7 @@ class SpanEmbed extends EmbeddableObject {
 /// of embedded objects and allows users to define their own types.
 class BlockEmbed extends EmbeddableObject {
   /// Creates a new block embed of specified [type] and containing [data].
-  BlockEmbed(
-    super.type, {
+  BlockEmbed(super.type, {
     super.data,
   }) : super(inline: false);
 

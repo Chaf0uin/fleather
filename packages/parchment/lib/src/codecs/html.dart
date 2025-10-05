@@ -576,6 +576,13 @@ class _ParchmentHtmlEncoder extends Converter<ParchmentDocument, String> {
               '<span class="mention" data-denotation-char="@" data-id="$id" data-value="$value"><span contenteditable="false"><span contenteditable="inherit"><span class="ql-mention-denotation-char">@</span>$value<span style="display: inline-block; height: 1px; width: 1px; overflow: hidden; ">&nbsp;</span></span></span></span>');
           return;
         }
+        if (embeddable.type == 'mention') {
+          String id = embeddable.data['id'] ?? embeddable.data['mention']['id'];
+          String value = embeddable.data['value'] ?? embeddable.data['mention']['value'];
+          buffer.write(''
+              '<span class="mention" data-denotation-char="@" data-id="$id" data-value="$value"><span contenteditable="false"><span contenteditable="inherit"><span class="ql-mention-denotation-char">@</span>$value<span style="display: inline-block; height: 1px; width: 1px; overflow: hidden; ">&nbsp;</span></span></span></span>');
+          return;
+        }
       }
     }
   }
@@ -996,6 +1003,12 @@ class _ParchmentHtmlDecoder extends Converter<String, ParchmentDocument> {
           return delta;
         }
         delta.insert('\n');
+        return delta;
+      }
+      if (node.localName == 'span' && node.classes.contains('mention')) {
+        final id = node.attributes['data-id'] ?? '';
+        final value = node.attributes['data-value'] ?? '';
+        delta.insert(SpanEmbed.mention(id, value).toJson());
         return delta;
       }
       if (node.localName == 'span' && node.classes.contains('mention')) {
