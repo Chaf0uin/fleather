@@ -90,6 +90,8 @@ class SpanEmbed extends EmbeddableObject {
     super.type, {
     super.data,
   }) : super(inline: true);
+
+  static SpanEmbed mention(String id, String value) => SpanEmbed('mention', data: {'id': id, 'value': value});
 }
 
 /// An object which occupies an entire line in a document and cannot co-exist

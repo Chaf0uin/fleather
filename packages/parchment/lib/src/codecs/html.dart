@@ -51,7 +51,7 @@ const _indentWidthInPx = 32;
 /// ## Embed mapping
 /// - [BlockEmbed.image] -> `<img src="...">`
 /// - [BlockEmbed.horizontalRule] -> `<hr>`
-/// - [BlockEmbed.mention] -> `<span class="mention">`
+/// - [SpanEmbed.mention] -> `<span class="mention">`
 ///
 /// *NB: `<br>` are not recognized as new lines and will be ignored*
 /// <br>
@@ -1001,7 +1001,7 @@ class _ParchmentHtmlDecoder extends Converter<String, ParchmentDocument> {
       if (node.localName == 'span' && node.classes.contains('mention')) {
         final id = node.attributes['data-id'] ?? '';
         final value = node.attributes['data-value'] ?? '';
-        delta.insert(BlockEmbed.mention(id, value).toJson());
+        delta.insert(SpanEmbed.mention(id, value).toJson());
         return delta;
       }
       inlineStyle = _updateInlineStyle(node, inlineStyle);
