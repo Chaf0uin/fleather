@@ -570,8 +570,10 @@ class _ParchmentHtmlEncoder extends Converter<ParchmentDocument, String> {
           return;
         }
         if (embeddable.type == 'mention') {
+          String id = embeddable.data['id'] ?? embeddable.data['mention']['id'];
+          String value = embeddable.data['value'] ?? embeddable.data['mention']['value'];
           buffer.write(''
-              '<span class="mention" data-denotation-char="@" data-id="${embeddable.data['id']}" data-value="${embeddable.data['value']}"><span contenteditable="false"><span contenteditable="inherit"><span class="ql-mention-denotation-char">@</span>${embeddable.data['value']}<span style="display: inline-block; height: 1px; width: 1px; overflow: hidden; ">&nbsp;</span></span></span></span>');
+              '<span class="mention" data-denotation-char="@" data-id="$id" data-value="$value"><span contenteditable="false"><span contenteditable="inherit"><span class="ql-mention-denotation-char">@</span>$value<span style="display: inline-block; height: 1px; width: 1px; overflow: hidden; ">&nbsp;</span></span></span></span>');
           return;
         }
       }
